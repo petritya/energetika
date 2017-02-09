@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Új megrendelés{% endblock %}
+
+{% block content %}
+  <h3>Új megrendelés rögzítése</h3><br><br>
+  <form method="post">
+    {% csrf_token %}
+    <section id="uj_megrendeles">
+		<section class="text_block">
+			<div class="text">Azonosító: </div>
+			<div class="text">Megrendelő neve: </div>
+			<div class="text">Ingatlan irányítószám: </div>
+			<div class="text">Ingatlan város: </div>
+			<div class="text">Ingatlan Cím: </div>
+			<div class="text">Felmérés időpontja: </div>
+			<div class="text">Felmérés díja: </div>
+		</section>
+		<section class="input_block">
+			<div class="text"><input type="text" size="4" name="azonosito" required></div>
+			<div class="text"><input type="text" name="megrendeloNeve"></div>
+			<div class="text"><input type="text" name="ingatlanIrszam" required></div>
+			<div class="text"><input type="text" name="ingatlanVaros" required></div>
+			<div class="text"><input type="text" name="ingatlanCim" required></div>
+			<div class="text"><input type="date" name="felmeresNapja" required> <input type="time" name="felmeresIdopontja" required></div>
+			<div class="text"><input type="text" name="felmeresDija" required></div>
+		</section>
+	</section>
+    <br><br>
+    <button type="submit">Mentés</button>
+	</form>
+{% endblock %}

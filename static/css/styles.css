@@ -1,0 +1,73 @@
+body {
+	width: 1000px;
+	font-size: 12px;
+	font-family: Arial;
+}
+
+input {
+	font-size: 12px;
+	font-family: Arial;
+}
+
+a, a:link, a:visited , a:hover, a:active {
+	text-decoration: none;
+	color: #188ae7;
+	font-weight: bold;
+}
+
+section .left{
+	width: 150px;
+	padding: 20px 40px;
+	float: left;
+}
+
+section .right{
+	padding: 20px;
+	float: left;
+}
+
+header {
+	width: 920px;
+	height: 40px;
+	padding: 10px 40px; 
+	background-color: #0309dc;
+	color: white;
+	border-radius: 0 40px 0 40px;
+	text-align: right;
+}
+
+section .menu a {
+	line-height: 28px;
+	display: block;
+}
+
+#uj_megrendeles {
+	width: 720px;
+	height: 200px;
+}
+
+section.text_block {
+	float: left;
+	padding-right: 3px;
+}
+
+section.input_block {
+	font-style: italic;
+	float: left;
+}
+
+.text {
+	height: 30px;
+}
+
+table.list, th.list, td.list {
+    border: 1px solid black;
+	border-collapse: collapse;
+	padding: 5px;
+	text-align: left;
+}
+
+input[type=submit].no-border {
+    border: 0;
+    background-color: #fff;
+}
