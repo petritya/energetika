@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Háztömb számítás{% endblock %}
+
+{% block content %}
+	<h3>Háztömb számítás</h3><br><br>
+	<form method="post" name="myform" accept-charset="utf-8">
+  		{% csrf_token %}
+  		<section style="width: 700px; height: 130px;">
+  			<section style="width: 160px; float: left; padding: 40px 20px">
+		  		<table>
+		  			<tr>
+		  				<td>A oldal </td>
+		  				<td><input type="text" tabindex=1 size="6" name="aoldal" autofocus> m</td>
+		  			</tr>
+		  			<tr>
+		  				<td>B oldal </td>
+		  				<td><input type="text" tabindex=2 size="6" name="boldal"> m</td>
+		  			</tr>
+		  			<tr>
+		  				<td>C oldal </td>
+		  				<td><input type="text" tabindex=3 size="6" name="coldal"> m</td>
+		  			</tr>
+		  		</table>
+		  	</section>
+		  	<section style="width: 500px; float: left;">
+		  		<img src="../static/images/tomb.jpg">
+		  	</section>
+		</section>
+	  	<section style="width: 600px; padding: 50px;">
+	  		<table width="500px">
+	  			<tr>
+	  				<td width="200px"><input name="szamol" style="width: 100px;" tabindex=4 type="submit" value="Számol"></td>
+	  				<td>A: <input type="text" size="6" value="{{ a }}" readonly> m<sup>2</sup></td>
+	  				<td>V: <input type="text" size="6" value="{{ v }}" readonly> m<sup>3</sup></td>
+	  			</tr>
+	  		</table>
+	  	</section>
+  	</form>
+{% endblock %}

@@ -9,6 +9,19 @@ input {
 	font-family: Arial;
 }
 
+FIELDSET {
+    margin: 10px;
+    border: 1px solid #3ecbf4;
+    padding: 10px;    
+    border-radius: 4px;
+}
+
+LEGEND{
+    padding: 5px;    
+    color: #0309dc;
+}
+
+
 a, a:link, a:visited , a:hover, a:active {
 	text-decoration: none;
 	color: #188ae7;
@@ -23,6 +36,7 @@ section .left{
 
 section .right{
 	padding: 20px;
+	width: 700px;
 	float: left;
 }
 
@@ -67,7 +81,11 @@ table.list, th.list, td.list {
 	text-align: left;
 }
 
-input[type=submit].no-border {
+table, th, td {
+	padding: 3px;
+}
+
+button.no-border {
     border: 0;
     background-color: #fff;
 }

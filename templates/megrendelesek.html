@@ -5,9 +5,9 @@
 {% block content %}
   <h3>Megrendelések</h3><br><br>
   <script type="text/javascript">
-  	function megrendeleskuld(element) {
-  		var oForm = document.getElementById(element);
-  		oForm.submit(); 
+  	function irszam_get(){
+  		var myVar = document.getElementById('ingatlanVaros').value;
+  		document.getElementById('ingatlanIrszam').value = myVar;
   	}
   </script>
   {% if hibauzenet %}
@@ -20,9 +20,9 @@
   	{% csrf_token %}
   	<div style="float: left;"><input type="month" name="felmereshonapja" onchange="this.form.submit()" value="{{ ido|date:'Y-m' }}"></div>
 	  <div style="float: right; padding-right: 20px;">
-	  	<input name="uj_megrendeles" tabindex=9 type="submit" value="Új megrendelés">
-	  	<input name="megrendeles_modositas" tabindex=10 type="submit" value="Megrendelés módosítás">
-	  	<input name="megrendeles_torles" tabindex=11 type="submit" value="Törlés">
+	  	<input name="uj_megrendeles" tabindex=11 type="submit" value="Új megrendelés">
+	  	<input name="megrendeles_modositas" tabindex=12 type="submit" value="Megrendelés módosítás">
+	  	<input name="megrendeles_torles" tabindex=13 type="submit" value="Törlés">
 	  </div>
 	  <br><br>
 	  <table style="padding-top: 20px;" width="700px">
@@ -30,25 +30,41 @@
 	  		<td>Név:</td>
 	  		<td><input type="text" tabindex=1 name="megrendeloNeve"  value="{{ instance.megrendeloNeve }}" autofocus></td>
 	  		<td>Azonosító:</td>
-	  		<td><input type="text" tabindex=5 size="6" name="azonosito" style="text-transform:uppercase" value="{{ instance.azonosito }}"></td>
+	  		<td><input type="text" tabindex=6 size="6" name="azonosito" style="text-transform:uppercase" value="{{ instance.azonosito }}"><input type="hidden" name="instanceid" value="{{ instance.pk }}"></td>
 	  	</tr>
 	  	<tr>
 	  		<td>Irányítószám:</td>
-	  		<td><input type="text" tabindex=2 size="2" name="ingatlanIrszam" value="{{ instance.ingatlanIrszam }}"></td>
+	  		<td><input type="text" size="2" name="ingatlanIrszam" id="ingatlanIrszam" value="{{ instance.ingatlanIrszam }}" readonly></td>
 	  		<td>Felmérés ideje:</td>
-	  		<td><input type="date" tabindex=6 name="felmeresNapja" value="{{ instance.felmeresNapja|date:'Y-m-d' }}"> <input type="time" tabindex=7 name="felmeresIdopontja" value="{{ instance.felmeresIdopontja|time:'H:i' }}"></td>
+	  		<td><input type="date" tabindex=8 name="felmeresNapja" value="{{ instance.felmeresNapja|date:'Y-m-d' }}"> <input type="time" tabindex=9 name="felmeresIdopontja" value="{{ instance.felmeresIdopontja|time:'H:i' }}"></td>
 	  	</tr>
 	  	<tr>
 	  		<td>Település:</td>
-	  		<td><input type="text" tabindex=3 name="ingatlanVaros" value="{{ instance.ingatlanVaros }}"></td>
+	  		<td>
+	  			<select tabindex=3 name="ingatlanVaros" id="ingatlanVaros" onchange="irszam_get()">
+	  				<option value=""></option>
+	  				{% for irSzam in irSzamok %}
+	  					<option value="{{ irSzam.irSzam }}"{% if irSzam.varos == instance.ingatlanVaros %} selected{% endif %}>
+	  						{{ irSzam.varos }} 						
+	  					</option>
+	  				{% endfor %}
+	  			</select>
+	  		</td>
 	  		<td>Felmérés díja:</td>
-	  		<td><input type="text" tabindex=8 size="2" name="felmeresDija" value="{{ instance.felmeresDija }}"> Ft.-</td>
+	  		<td><input type="text" tabindex=10 size="2" name="felmeresDija" value="{{ instance.felmeresDija }}"> Ft.-</td>
 	  	</tr>
 	  	  	<tr>
 	  		<td>Cím:</td>
 	  		<td><input type="text" tabindex=4 name="ingatlanCim" value="{{ instance.ingatlanCim }}"></td>
 	  		<td>Havi összeg:</td>
 	  		<td><font color="red"><b>{{ osszesdij|intcomma }} Ft.-</b></font></td>
+	  	</tr>
+	  	</tr>
+	  	  	<tr>
+	  		<td>Telefonszám:</td>
+	  		<td><input type="text" tabindex=5 name="megrendeloTelSzam" value="{{ instance.megrendeloTelSzam }}"></td>
+	  		<td></td>
+	  		<td></td>
 	  	</tr>
 	  </table>
 	  <div style="text-align: right;"><input type="submit" name="reset" value="RESET"></div><br>
@@ -61,10 +77,10 @@
 			</tr>
 			{% for megrendeles in megrendelesek %}
 			<tr>
-				<td class="list"><input type="submit" class="no-border" name="megrendelesid" value="{{ megrendeles.azonosito }}" ></td>
+				<td class="list"><button type="submit" class="no-border" name="megrendelesid" value="{{ megrendeles.pk }}" >{{ megrendeles.azonosito }}</button></td>
 				<td class="list">{{ megrendeles.megrendeloNeve }}</td>
 				<td class="list">{{ megrendeles.felmeresNapja }} {{ megrendeles.felmeresIdopontja }}</td>
-				<td class="list">{{ megrendeles.ingatlanVaros }}, {{ megrendeles.ingatlanCim }}</td>
+				<td class="list">{{ megrendeles.ingatlanIrszam }} {{ megrendeles.ingatlanVaros }}, {{ megrendeles.ingatlanCim }}</td>
 			</tr>
 			{% endfor %}
 	  </table>

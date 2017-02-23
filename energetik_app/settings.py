@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-
-    'widget_tweaks',
+    'templated_docs',
     'energetika',
 ]
 
@@ -56,6 +55,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'energetik_app.urls'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"),]
+
+TEMPLATED_DOCS_LIBREOFFICE_PATH = 'c:\Program Files (x86)\LibreOffice 5\program'
 
 TEMPLATES = [
     {

@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+
+{% block title %}Felmérési lap{% endblock %}
+
+{% block content %}
+	<h3>Felmérési lap</h3>
+	<script type="text/javascript">
+	  	function irszam_get(){
+	  		var myVar = document.getElementById('megrendeloVaros').value;
+	  		document.getElementById('megrendeloIrszam').value = myVar;
+	  	}
+	  	function szirszam_get(){
+	  		var myVar = document.getElementById('szallitasiVaros').value;
+	  		document.getElementById('szallitasiIrszam').value = myVar;
+	  	}
+	</script>
+	<form method="post" name="myform" accept-charset="utf-8">
+		{% csrf_token %}
+		<section style="width: 620px; height: 20px; padding-bottom: 10px;">
+			<section style="float: left; width: 400px;">Azonosító: <input type="text" tabindex=1 size="6" name="azonosito" onchange="this.form.submit()" style="text-transform:uppercase" value="{{ instance.azonosito }}"></section>
+			<section style="float: left;"><input name="mentes" tabindex=12 type="submit" value="Mentés"><input type="hidden" name="instanceid" value="{{ instance.pk }}"></section>
+			<section style="float: left;"><input name="nyomtat" tabindex=12 type="submit" value="Nyomtat"><input type="hidden" name="instanceid" value="{{ instance.pk }}"></section>
+		</section>
+		<section style="width: 620px; height:480px; overflow: auto;">
+			<section>
+				<fieldset>
+					<legend>Adatok</legend>
+					<table width="550px">
+						<tr>
+							<td width="100px">Megrendelő neve:</td>
+							<td width="170px"><input type="text" tabindex=2 name="megrendeloNeve" size="23" value="{{ megrendeles.megrendeloNeve }}" disabled></td>
+							<td width="38px">HRSZ:</td>
+							<td width="128px"><input type="text" size="19" tabindex=2 name="hRSZ" value="{{ instance.hRSZ }}"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Megrendelő címe:</td>
+							<td>
+								<input type="text" size="2" name="megrendeloIrszam" id="megrendeloIrszam" value="{{ instance.megrendeloIrszam }}" readonly>
+								<select tabindex=3 name="megrendeloVaros" id="megrendeloVaros" onchange="irszam_get()">
+					  				<option value=""></option>
+					  				{% for irSzam in irSzamok %}
+					  					<option value="{{ irSzam.irSzam }}"{% if irSzam.varos == instance.megrendeloVaros %} selected{% endif %}>
+					  						{{ irSzam.varos }} 						
+					  					</option>
+					  				{% endfor %}
+					  			</select>
+							</td>
+							<td colspan=2><input type="text" size="28" tabindex=4 name="megrendeloCim" value="{{ instance.megrendeloCim }}"></td>
+							<td><input type="radio" name="szla" value=1 {% if instance.szla == '1' %} checked="checked"{% endif %}></td>
+						</tr>
+						<tr>
+							<td>Ingatlan címe:</td>
+							<td>
+								<input type="text" size="2" value="{{ megrendeles.ingatlanIrszam }}" disabled>
+								<input type="text" size="15" value="{{ megrendeles.ingatlanVaros }}" disabled>
+							</td>
+							<td colspan=2><input type="text" size="28" tabindex=4 name="ingatlanCim" value="{{ megrendeles.ingatlanCim }}" disabled></td>
+							<td><input type="radio" name="szla" value=0></td>
+						</tr>
+						<tr>
+							<td>Szállítási adatok:</td>
+							<td>
+								<input type="text" size="2" name="szallitasiIrszam" id="szallitasiIrszam" value="{{ instance.szallitasiIrszam }}" readonly>
+								<select tabindex=3 name="szallitasiVaros" id="szallitasiVaros" onchange="szirszam_get()">
+					  				<option value=""></option>
+					  				{% for irSzam in irSzamok %}
+					  					<option value="{{ irSzam.irSzam }}"{% if irSzam.varos == instance.szallitasiVaros %} selected{% endif %}>
+					  						{{ irSzam.varos }} 						
+					  					</option>
+					  				{% endfor %}
+					  			</select>
+							</td>
+							<td colspan=2><input type="text" size="28" tabindex=4 name="szallitasiCim" value="{{ instance.szallitasiCim }}"></td>
+							<td><input type="radio" name="szla" value=2 {% if instance.szla == '2' %} checked{% endif %}></td>
+						</tr>
+					</table>
+					<table width="550px">
+						<tr>
+							<td>Tel. sz. SMS:</td>
+							<td><input type="text" tabindex=4 name="sMSTelSzam" value="{{ instance.sMSTelSzam }}"></td>
+							<td style="padding-left: 25px;">Tel. sz. futár:</td>
+							<td><input type="text" tabindex=4 name="telSzamFutar" value="{{ instance.telSzamFutar }}"></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section>
+				<fieldset>
+					<legend>Belmagasság, alapterület</legend>
+					<table width="550px">
+						<tr>
+							<td>bm - pince:</td>
+							<td><input type="text" size="4" tabindex=4 name="bmPince" value="{{ instance.bmPince }}"> m</td>
+							<td>bm - földszint:</td>
+							<td><input type="text" size="4" tabindex=4 name="bmFsz" value="{{ instance.bmFsz }}"> m</td>
+							<td>bm - emelet:</td>
+							<td><input type="text" size="4" tabindex=4 name="bmEmelet" value="{{ instance.bmEmelet }}"> m</td>
+						</tr>
+						<tr>
+							<td>T - pince:</td>
+							<td><input type="text" size="4" tabindex=4 name="teruletPince" value="{{ instance.teruletPince }}"> m<sup>2</sup></td>
+							<td>T - földszint:</td>
+							<td><input type="text" size="4" tabindex=4 name="teruletFsz" value="{{ instance.teruletFsz }}"> m<sup>2</sup></td>
+							<td>T - emelet:</td>
+							<td><input type="text" size="4" tabindex=4 name="teruletEmelet" value="{{ instance.teruletEmelet }}"> m<sup>2</sup></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section>
+				<fieldset>
+					<legend>További adatok</legend>
+					<table width="550px">
+						<tr>
+							<td>T - tulajdoni lap:</td>
+							<td><input type="text" size="4" tabindex=4 name="teruletTulLap" value="{{ instance.teruletTulLap }}"> m<sup>2</sup></td>
+							<td>Sz.K.:</td>
+							<td><input type="text" size="4" tabindex=4 name="szK" value="{{ instance.szK }}"> m</td>
+							<td>A:</td>
+							<td><input type="text" size="4" tabindex=4 name="a" value="{{ instance.a }}"> m<sup>2</sup></td>
+							<td>V:</td>
+							<td><input type="text" size="4" tabindex=4 name="v" value="{{ instance.v }}"> m<sup>3</sup></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section>
+				<fieldset>
+					<legend>Felmenő fal</legend>
+					<table width="550px">
+						<tr>
+							<td>Építés éve:</td>
+							<td><input type="text" size="8" tabindex=4 name="epitesEve" value="{{ instance.epitesEve }}"></td>
+							<td>Hőszigetelés vastagsága:</td>
+							<td><input type="text" size="8" tabindex=4 name="hoszig" value="{{ instance.hoszig }}"> cm</td>
+						</tr>
+					</table>
+					<table width="550px">
+						<tr>
+							<td>Felmenő fal anyaga, vastagsága:</td>
+							<td><input type="text" size="50" tabindex=4 name="fal" value="{{ instance.fal }}"></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section style="width: 300px; float: left;">
+				<fieldset>
+					<legend>Padló</legend>
+					<table width="260px">
+						<tr>
+							<td width="195px">Hőszigeletés vastagsága:</td>
+							<td width="65px"><input type="text" size="2" tabindex=4 name="padloHoszig" value="{{ instance.padloHoszig }}"> cm</td>
+						</tr>
+					</table>
+					<table width="261px">
+						<tr>
+							<td width="56px">Fűtött: <input type="checkbox" tabindex=4 name="padloFutott" {% if instance.padloFutott %} checked{% endif %}></td>
+							<td width="103px">Fűtetlen pince: <input type="checkbox" tabindex=4 name="padloFutetlenPince" {% if instance.padloFutetlenPince %} checked{% endif %}></td>		
+							<td width="70px">Fűtetlen: <input type="checkbox" tabindex=4 name="padloFutetlen" {% if instance.padloFutetlen %} checked{% endif %}></td>
+						</tr>
+					</table>
+					<table width="260px">
+						<tr>
+							<td>Fa: <input type="checkbox" tabindex=4 name="padloAnyagFa" {% if instance.padloAnyagFa %} checked{% endif %}></td>
+							<td>Beton: <input type="checkbox" tabindex=4 name="padloAnyagBeton" {% if instance.padloAnyagBeton %} checked{% endif %}></td>
+							<td>Acél: <input type="checkbox" tabindex=4 name="padloAnyagAcel" {% if instance.padloAnyagAcel %} checked{% endif %}></td>
+							<td>Tégla: <input type="checkbox" tabindex=4 name="padloAnyagTegla" {% if instance.padloAnyagTegla %} checked{% endif %}></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section style="width: 300px; float: left;">
+				<fieldset>
+					<legend>Födém, Tető</legend>
+					<table width="260px">
+						<tr>
+							<td width="195px">Hőszigeletés vastagsága:</td>
+							<td width="65px"><input type="text" size="2" tabindex=4 name="fodemHoszig" value="{{ instance.fodemHoszig }}"> cm</td>
+						</tr>
+					</table>
+					<table width="261px">
+						<tr>
+							<td width="56px">Fűtött: <input type="checkbox" tabindex=4 name="fodemFutott" {% if instance.fodemFutott %} checked{% endif %}></td>
+							<td width="103px">Fűtetlen padl.: <input type="checkbox" tabindex=4 name="fodemFutetlenPadlas" {% if instance.fodemFutetlenPadlas %} checked{% endif %}></td>		
+							<td width="70px">Fűtetlen: <input type="checkbox" tabindex=4 name="fodemFutetlen" {% if instance.fodemFutetlen %} checked{% endif %}></td>
+						</tr>
+					</table>
+					<table width="260px">
+						<tr>
+							<td>Fa: <input type="checkbox" tabindex=4 name="fodemAnyagFa" {% if instance.fodemAnyagFa %} checked{% endif %}></td>
+							<td>Beton: <input type="checkbox" tabindex=4 name="fodemAnyagBeton" {% if instance.fodemAnyagBeton %} checked{% endif %}></td>
+							<td>Acél: <input type="checkbox" tabindex=4 name="fodemAnyagAcel" {% if instance.fodemAnyagAcel %} checked{% endif %}></td>
+							<td>Tégla: <input type="checkbox" tabindex=4 name="fodemAnyagTegla" {% if instance.fodemAnyagTegla %} checked{% endif %}></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section>
+				<fieldset>
+					<legend>Nyílászárók</legend>
+					<table width="550px">
+						<tr>
+							<td width="20px">U=</td>
+							<td width="120px"><input type="text" size="4" tabindex=4 name="u" value="{{ instance.u }}"> W/m<sup>2</sup>K</td>
+							<td width="80px">Beépítés éve:</td>
+							<td width="80px"><input type="text" size="8" tabindex=4 name="nyilasZBeepites" value="{{ instance.nyilasZBeepites }}"></td>
+							<td></td>
+						</tr>
+					</table>
+					<table width="550px">
+						<tr>
+							<td width="65px">Üvegezés:</td>
+							<td width="45px">régi <input type="checkbox" tabindex=4 name="nyilasZRegi" {% if instance.nyilasZRegi %} checked{% endif %}></td>
+							<td width="40px">1x <input type="checkbox" tabindex=4 name="nyilasZ1x" {% if instance.nyilasZ1x %} checked{% endif %}></td>
+							<td width="40px">2x <input type="checkbox" tabindex=4 name="nyilasZ2x" {% if instance.nyilasZ2x %} checked{% endif %}></td>
+							<td width="40px">3x <input type="checkbox" tabindex=4 name="nyilasZ3x" {% if instance.nyilasZ3x %} checked{% endif %}></td>
+							<td width="40px">4x <input type="checkbox" tabindex=4 name="nyilasZ4x" {% if instance.nyilasZ4x %} checked{% endif %}></td>
+							<td width="40px">új <input type="checkbox" tabindex=4 name="nyilasZUj" {% if instance.nyilasZUj %} checked{% endif %}></td>
+							<td width="60px">PVC <input type="checkbox" tabindex=4 name="nyilasZPVC" {% if instance.nyilasZPVC %} checked{% endif %}></td>
+							<td width="40px">fa <input type="checkbox" tabindex=4 name="nyilasZFa" {% if instance.nyilasZFa %} checked{% endif %}></td>
+							<td width="50px">fém <input type="checkbox" tabindex=4 name="nyilasZFem" {% if instance.nyilasZFem %} checked{% endif %}></td>
+							<td></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section>
+				<fieldset>
+					<legend>Bejárati ajtó</legend>
+					<table width="550px">
+						<tr>
+							<td width="20px">Aü=</td>
+							<td width="80px"><input type="text" size="4" tabindex=4 name="ajtoUveg" value="{{ instance.ajtoUveg }}"> m<sup>2</sup></td>
+							<td></td>
+						</tr>
+					</table>
+					<table width="550px">
+						<tr>
+							<td width="40px">Ajtó:</td>
+							<td width="45px">régi <input type="checkbox" tabindex=4 name="ajtoRegi" {% if instance.ajtoRegi %} checked{% endif %}></td>
+							<td width="40px">1x <input type="checkbox" tabindex=4 name="ajto1x" {% if instance.ajto1x %} checked{% endif %}></td>
+							<td width="40px">2x <input type="checkbox" tabindex=4 name="ajto2x" {% if instance.ajto2x %} checked{% endif %}></td>
+							<td width="40px">3x <input type="checkbox" tabindex=4 name="ajto3x" {% if instance.ajto3x %} checked{% endif %}></td>
+							<td width="40px">4x <input type="checkbox" tabindex=4 name="ajto4x" {% if instance.ajto4x %} checked{% endif %}></td>
+							<td width="40px">új <input type="checkbox" tabindex=4 name="ajtoUj" {% if instance.ajtoUj %} checked{% endif %}></td>
+							<td width="60px">PVC <input type="checkbox" tabindex=4 name="ajtoPVC" {% if instance.ajtoPVC %} checked{% endif %}></td>
+							<td width="40px">fa <input type="checkbox" tabindex=4 name="ajtoFa" {% if instance.ajtoFa %} checked{% endif %}></td>
+							<td width="50px">fém <input type="checkbox" tabindex=4 name="ajtoFem" {% if instance.ajtoFem %} checked{% endif %}></td>
+							<td></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section style="width: 300px; float: left;">
+				<fieldset>
+					<legend>Fűtési rendszer</legend>
+					<table width="260px">
+						<tr>
+							<td width="130px">Kívül: <input type="checkbox" tabindex=4 name="futesHelyeKivul" {% if instance.futesHelyeKivul %} checked{% endif %}></td>		
+							<td width="130px">Belül: <input type="checkbox" tabindex=4 name="futesHelyeBelul" {% if instance.futesHelyeBelul %} checked{% endif %}></td>
+						</tr>
+					</table>
+					<table width="260px">
+						<tr>
+							<td><input type="text" size="35" tabindex=4 name="futes" value="{{ instance.futes }}"></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section style="width: 300px; float: left;">
+				<fieldset>
+					<legend>Melegvízelőállító rendszer</legend>
+					<table width="260px">
+						<tr>
+							<td width="130px">Kívül: <input type="checkbox" tabindex=4 name="melegVizHelyeKivul" {% if instance.melegVizHelyeKivul %} checked{% endif %}></td>		
+							<td width="130px">Belül: <input type="checkbox" tabindex=4 name="melegVizHelyeBelul" {% if instance.melegVizHelyeBelul %} checked{% endif %}></td>
+						</tr>
+					</table>
+					<table width="260px">
+						<tr>
+							<td><input type="text" size="35" tabindex=4 name="melegViz" value="{{ instance.melegViz }}"></td>
+						</tr>
+					</table>
+				</fieldset>
+			</section>
+			<section style="text-align: center;">Dátum: <i>{{ megrendeles.felmeresNapja }}</i></section>
+		</section>
+	</form>
+{% endblock %}

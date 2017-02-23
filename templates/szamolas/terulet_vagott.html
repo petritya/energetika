@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Területszámítás{% endblock %}
+
+{% block content %}
+		<h3>Területszámítás "L" alakú lakás</h3><br><br>
+	<form method="post" name="myform" accept-charset="utf-8">
+  		{% csrf_token %}
+  		<section style="width: 700px; height: 130px;">
+  			<section style="width: 160px; float: left; padding: 40px 20px">
+		  		<table>
+		  			<tr>
+		  				<td>A oldal </td>
+		  				<td><input type="text" tabindex=1 size="6" name="aoldal" autofocus> m</td>
+		  			</tr>
+		  			<tr>
+		  				<td>B oldal </td>
+		  				<td><input type="text" tabindex=2 size="6" name="boldal"> m</td>
+		  			</tr>
+		  			<tr>
+		  				<td>C oldal </td>
+		  				<td><input type="text" tabindex=3 size="6" name="coldal" autofocus> m</td>
+		  			</tr>
+		  			<tr>
+		  				<td>D oldal </td>
+		  				<td><input type="text" tabindex=4 size="6" name="doldal"> m</td>
+		  			</tr>
+		  			<tr>
+		  				<td>E oldal </td>
+		  				<td><input type="text" tabindex=5 size="6" name="eoldal" autofocus> m</td>
+		  			</tr>
+		  			<tr>
+		  				<td>F oldal </td>
+		  				<td><input type="text" tabindex=6 size="6" name="foldal"> m</td>
+		  			</tr>
+		  		</table>
+		  	</section>
+		  	<section style="width: 500px; float: left;">
+		  		<img src="../static/images/alap_vagott.jpg">
+		  	</section>
+		</section>
+	  	<section style="width: 600px; padding: 50px;">
+	  		<table width="600px">
+	  			<tr>
+	  				<td width="300px"><input name="szamol" style="width: 100px;" tabindex=7 type="submit" value="Számol"></td>
+	  				<td><input type="text" size="6" value="{{ eredmeny }}" readonly> m<sup>2</sup></td>
+	  			</tr>
+	  		</table>
+	  	</section>
+  	</form>
+{% endblock %}
